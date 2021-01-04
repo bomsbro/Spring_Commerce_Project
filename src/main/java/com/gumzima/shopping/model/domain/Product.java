@@ -5,7 +5,7 @@ package com.gumzima.shopping.model.domain;
 public class Product {
 	private int product_id;
 	private int p_subcategory_id;
-	private String name;
+	private String product_name;
 	private int price;
 	private String content;
 	private String filename;
@@ -25,11 +25,11 @@ public class Product {
 	public void setP_subcategory_id(int p_subcategory_id) {
 		this.p_subcategory_id = p_subcategory_id;
 	}
-	public String getName() {
-		return name;
+	public String getProduct_name() {
+		return product_name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
 	}
 	public int getPrice() {
 		return price;
@@ -67,5 +67,4 @@ public class Product {
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
-	
 }

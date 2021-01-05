@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.gumzima.shopping.model.domain.Product" alias="Product"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Recipe" alias="Recipe"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Recipe_product" alias="Recipe_product"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Alarm" alias="alarm"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Cart_item" alias="Cart_item"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Member" alias="Member"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Order_detail" alias="Order_detail"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Orders" alias="Orders"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.P_topcategory" alias="P_topcategory"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.P_subcategory" alias="P_subcategory"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.R_topcategory" alias="R_topcategory"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.R_subcategory" alias="R_subcategory"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Receiverinfo" alias="Receiverinfo"/>
+	</typeAliases>
+  <mappers>
+    <mapper resource="com/gumzima/shopping/mybatis/mapper/ProductMapper.xml"/>
+    <mapper resource="com/gumzima/shopping/mybatis/mapper/AlarmMapper.xml"/>
+    <mapper resource="com/gumzima/shopping/mybatis/mapper/Cart_itemMapper.xml"/>
+    <mapper resource="com/gumzima/shopping/mybatis/mapper/Order_detailMapper.xml"/>
+    <mapper resource="com/gumzima/shopping/mybatis/mapper/OrdersMapper.xml"/>
+  </mappers>
+</configuration>

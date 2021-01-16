@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.gumzima.shopping">
+	<logger name="com.koreait.gumzima">
 		<level value="info" />
 	</logger>
 	

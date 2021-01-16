@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Product">
+<!-- 상품과 연계된 부모를 같이 가져오자, 상품입장에서는 부모와 1:1 관계이다(association) -->
+	<resultMap id="productSubcategoryMap" type="Product">
+		<id column="product_id" property="product_id"/>	
+		<result column="product_name" property="product_name"/>
+		<result column="price" property="price"/>
+		<result column="stock" property="stock"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+		<result column="filename" property="filename"/>
+		<!-- 실행타임에 부모의 레크도 한건을 조회하여 Product안의 SubCategory에 채워넣는다.
+		결국 : join한 결과와 같다. -->
+		<association column="p_subcategory_id"
+			property="p_subcategory"
+			javaType="P_subcategory"
+			select="P_subcategory.select"/>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="productSubcategoryMap">
+		select * from product order by product_name asc
+	</select>
+	
+	<select id="searchProduct" parameterType="String" resultMap="productSubcategoryMap">
+		select * from product where product_name like '%'||#{text}||'%' order by product_id desc 
+	</select>
+	
+	<select id="searchProductByMaxPrice" parameterType="String" resultMap="productSubcategoryMap">
+		select * from product where product_name like '%'||#{text}||'%' order by price desc 
+	</select>
+	
+	<select id="searchProductByMinPrice" parameterType="String" resultMap="productSubcategoryMap">
+		select * from product where product_name like '%'||#{text}||'%' order by price asc 
+	</select>
+	
+	<select id="searchProductByHit" parameterType="String" resultMap="productSubcategoryMap">
+		select * from product where product_name like '%'||#{text}||'%' order by hit desc  
+	</select>	
+	
+	<select id="searchProductByCategory" parameterType="com.gumzima.shopping.model.domain.SearchText" resultMap="productSubcategoryMap">
+		select * from product where p_subcategory_id in 
+			<foreach collection="subId" item="subId" open="(" close=")" separator=","> #{subId}</foreach> and product_name like '%'||#{text}||'%' 
+	</select>
+	
+	<!-- 상품 상세보기 -->
+	<resultMap id="joinScoreImage" type="Product">
+		<id column="product_id" property="product_id"/>	
+		<result column="product_name" property="product_name"/>
+		<result column="price" property="price"/>
+		<result column="stock" property="stock"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+		<result column="filename" property="filename"/>
+		
+		<association column="p_subcategory_id"
+			property="p_subcategory"
+			javaType="P_subcategory"
+			select="P_subcategory.select"/>
+		
+		<association 
+			column="product_id"
+			property="score"
+			javaType="Score"
+			select="Score.selectByProductId"/>
+				 	
+		<!-- 이미지 -->
+		<collection
+			column="product_id"
+		 	property="imageList"
+		 	javaType="java.util.List"
+		 	ofType="Image"
+		 	select="Image.selectByProductId"/>
+	</resultMap>
+	
+	<select id="select" resultMap="joinScoreImage">
+		select * from product where product_id=#{product_id}
+	</select>
+
+	<insert id="insert" parameterType="Product">
+		insert into product(product_id, p_subcategory_id, product_name, price, detail, filename, stock)
+		values(seq_product.nextval, #{p_subcategory.p_subcategory_id}, #{product_name}, #{price}, #{detail}, #{filename}, #{stock})
+		<selectKey order="AFTER" keyProperty="product_id" resultType="int">
+			select seq_product.currval as product_id from dual
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="Product">
+		update product set p_subcategory_id=#{p_subcategory.p_subcategory_id}, product_name=#{product_name},
+		price=#{price}, detail=#{detail}, filename=#{filename}, stock=#{stock}
+		where product_id=#{product_id} 
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from product where product_id=#{product_id}
+	</delete>
+</mapper>

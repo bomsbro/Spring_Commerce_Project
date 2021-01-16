@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Recipe_Product">
+	<select id="selectProductByRecipe" parameterType="int" resultType="int">
+		select product_id from recipe_product where recipe_id=#{recipe_id}
+	</select>
+	
+	<select id="selectRecipeByProduct" parameterType="int" resultType="int">
+		select recipe_id from recipe_product where product_id=#{product_id}
+	</select>
+	
+	<select id="selectAll" resultType="Recipe_Product">
+		select * from recipe_product
+	</select>
+	
+	<insert id="insert" parameterType="int">
+		insert into recipe_product(recipe_product_id, recipe_id, product_id) 
+		values(seq_recipe_product.nextval, #{recipe_id}, #{product_id})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from recipe_product where recipe_id=#{recipe_id}
+	</delete>
+</mapper>

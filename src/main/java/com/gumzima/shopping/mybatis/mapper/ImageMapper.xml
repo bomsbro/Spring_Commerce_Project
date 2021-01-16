@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Image">
+	<!-- 입력 후, 곧바로 pk를 추출하고자 할 때는 selectKey를 이용할 수 있다. -->	
+	<insert id="insert" parameterType="Image">
+		insert into image(image_id, product_id, filename) values(seq_image.nextval, #{product_id}, #{filename})
+		<selectKey order="AFTER" keyProperty="image_id" resultType="int">
+			select seq_image.currval as image_id from dual
+		</selectKey>
+	</insert>
+	
+	<select id="selectByProductId" parameterType="int" resultType="Image">
+		select * from image where product_id=#{product_id}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from image where image_id=#{image_id}
+	</delete>
+	
+	<delete id="deleteByProductId" parameterType="int">
+		delete from image where product_id=#{product_id}
+	</delete>
+</mapper>

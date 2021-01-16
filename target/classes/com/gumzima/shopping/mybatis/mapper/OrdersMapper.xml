@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Orders">
+
+		<select id="selectAll" resultType="Orders">
+			select * from orders order by order_date desc
+		</select>
+		
+		<select id="selectOne" parameterType="int" resultType="Orders">
+			select * from orders where orders_id=#{orders_id}
+		</select>
+		
+		<update id="update" parameterType="Orders">
+	    update Orders
+	    <set>
+	    		<if test="invoice_number != null">
+	   				invoice_number=#{invoice_number},
+	   				shipment_date=sysdate,
+	    		</if>
+	        <if test="order_status_id != null">order_status_id=#{order_status_id}</if>
+	    </set>
+	    where orders_id = #{orders_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from orders where orders_id=#{orders_id}
+	</delete>
+	
+	<insert id="insert" parameterType="Orders">
+		insert into orders(orders_id, member_id, paymethod_id, order_date, order_price, delivery_price, discount_price, total_price, order_status_id, money_sender
+		, receiver_name, receiver_cellphone, receiver_postcode, receiver_address1, receiver_address2, receiver_request)
+		values(seq_orders.nextval, #{member_id}, #{paymethod_id}, sysdate, #{order_price}, #{delivery_price}, #{discount_price}, #{total_price}, 1, #{money_sender}
+		, #{receiver_name}, #{receiver_cellphone}, #{receiver_postcode}, #{receiver_address1}, #{receiver_address2}, #{receiver_request})
+		<selectKey order="AFTER" keyProperty="orders_id" resultType="int">
+			select seq_orders.currval as orders_id from dual
+		</selectKey>
+	</insert>
+	
+	<select id="selectById" resultType="Orders" parameterType="int">
+		select * from orders where member_id=#{member_id}
+	</select>
+		
+</mapper>

@@ -2,7 +2,7 @@ package com.gumzima.shopping.model.domain;
 
 //@viniyoon
 
-public class cart_item {
+public class Cart_item {
 	private int cart_item_id;
 	private int member_id;
 	private int product_id;

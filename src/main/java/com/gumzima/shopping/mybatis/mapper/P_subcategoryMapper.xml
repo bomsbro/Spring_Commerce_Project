@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="P_subcategory">
+	<!-- 모두 가져오기 -->
+	<select id="selectAll" resultType="P_subcategory">
+		select * from p_subcategory order by p_subcategory_id asc
+	</select>
+	
+	<!-- 상위 카테고리 기준 가져오기 -->
+	<select id="selectById" resultType="P_subcategory" parameterType="int">
+		select * from p_subcategory where p_topcategory_id=#{p_topcategory_id}
+	</select>
+
+	<!-- 한건 가져오기 -->
+	<select id="select" parameterType="int" resultType="P_subcategory">
+		select * from p_subcategory where p_subcategory_id=#{p_subcategory_id}
+	</select>
+	
+</mapper>

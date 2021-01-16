@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Recipe">
+
+	<select id="selectAll" resultType="Recipe">
+		select * from recipe order by recipe_id desc
+	</select>
+	
+	<select id="selectAllByText" parameterType="String" resultType="Recipe">
+		select  * from recipe where title like '%'||#{text}||'%'
+	</select>
+	
+	<insert id="insert" parameterType="Recipe">
+		insert into recipe(recipe_id, r_category_id, title, content, cooking_time, filename)
+		values(seq_recipe.nextval, #{r_category_id}, #{title}, #{content}, #{cooking_time}, #{filename})
+		<selectKey order="AFTER" keyProperty="recipe_id" resultType="int">
+			select seq_recipe.currval as recipe_id from dual
+		</selectKey>
+	</insert>
+
+	<select id="selectByCategory" parameterType="RecipeSearch" resultType="Recipe">
+		select * from recipe where title like '%'||#{text}||'%' and r_category_id=#{r_category_id} 
+	</select>
+	
+	<select id="select" parameterType="int" resultType="Recipe">
+		select * from recipe where recipe_id=#{recipe_id}
+	</select>
+	
+	<update id="update" parameterType="Recipe">
+		update recipe set r_category_id=#{r_category_id}, title=#{title}, content=#{content}, cooking_time=#{cooking_time}, filename=#{filename}
+		where recipe_id=#{recipe_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from recipe where recipe_id=#{recipe_id}
+	</delete>
+</mapper>

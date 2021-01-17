@@ -7,8 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.gumzima.shopping.common.Search;
 import com.gumzima.shopping.exception.NoticeException;
+import com.gumzima.shopping.model.common.Search;
 import com.gumzima.shopping.model.domain.Notice;
 
 @Repository

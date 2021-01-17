@@ -3,7 +3,7 @@ package com.gumzima.shopping.model.notice.respository;
 import java.util.List;
 import java.util.Map;
 
-import com.gumzima.shopping.common.Search;
+import com.gumzima.shopping.model.common.Search;
 import com.gumzima.shopping.model.domain.Notice;
 
 

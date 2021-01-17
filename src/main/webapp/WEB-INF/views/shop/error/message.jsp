@@ -1,4 +1,4 @@
-<%@page import="com.gumzima.shopping.common.MessageData"%>
+<%@page import="com.gumzima.shopping.model.common.MessageData"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%
 	MessageData messageData= (MessageData)request.getAttribute("messageData");

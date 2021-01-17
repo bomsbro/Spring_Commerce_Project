@@ -3,10 +3,13 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%	
 	String str="";	
-	System.out.print(request.getAttribute("m_id"));
 	if(request.getAttribute("m_id")!=null){
-		String m_id=(String)request.getAttribute("m_id"); // null...where is congtroller show me 
-		str="회원님의 ID는 "+m_id+"입니다.";
+		String m_id=(String)request.getAttribute("m_id"); // null...where is congtroller show me
+		if(request.getAttribute("m_id").equals("0")){
+			str="일치하는 ID 정보가 없습니다.";
+		}else{
+			str="회원님의 ID는 "+m_id+"입니다.";
+		}
 	}
 %>
 <!DOCTYPE html>
@@ -37,25 +40,28 @@ body {
 }
 </style>
 <script>
-	var exampleModal = document.getElementById('exampleModal')
-  	var button = event.relatedTarget
-  	var recipient = button.getAttribute('data-bs-whatever')
-  	var modalTitle = exampleModal.querySelector('.modal-title')
-  	var modalBodyInput = exampleModal.querySelector('.modal-body input')
-	$(function () {
-		exampleModal.addEventListener('show.bs.modal', function (event) {
-	 	modalTitle.textContent = 'New message to ' + recipient
-		modalBodyInput.value = recipient
-		})
-	})
-	
 	function login(){
-		$("#login-form").attr({
-			action:"/shop/member/login",
-			method:"post"
-		});
-		$("#login-form").submit();	
-		
+		if($("#m_id").val()==""){
+			alert("아이디를 입력해주세요");
+		}else if($("#m_pass").val()==""){
+			alert("비밀번호를 입력해주세요");
+		}else{
+			$.ajax({
+				url:"/shop/member/login",
+				method:"post",
+				data:{
+					m_id:$("#m_id").val(),
+					m_pass:$("#m_pass").val()
+				},
+				success:function(responseData){
+					if(responseData=="1"){
+						location.href="/";
+					}else{
+						alert("올바르지 않은 정보입니다.");
+					}
+				}
+			});
+		}
 	}
 </script>		
   </head>

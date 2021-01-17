@@ -72,6 +72,13 @@ public class MybatisCartDAO implements CartDAO{
 			throw new CartException("장바구니 삭제 실패");
 		}
 	}
+
+	@Override
+	public int selectCartItems(int member_id) {
+		System.out.println("cartItems의 member_id : "+member_id);
+		System.out.println("cartItems의 개수 : "+sqlSessionTemplate.selectOne("Cart.selectCartItems", member_id));
+		return sqlSessionTemplate.selectOne("Cart.selectCartItems", member_id);
+	}
 	
 	
 }

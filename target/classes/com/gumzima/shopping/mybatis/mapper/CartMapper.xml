@@ -34,7 +34,11 @@
 		, p_subcategory_id , product_name, price, detail, filename
 		from cart c, product p 
 		where  c.product_id=p.product_id and member_id=#{member_id}
-	</select>	
+	</select>
+	
+	<select id="selectCartItems" parameterType="int" resultType="int">
+		select count(*) from cart where member_id=#{member_id}	
+	</select>
 	
 	<!-- 장바구니 비우기 -->
 	<delete id="delete" parameterType="int">

@@ -15,5 +15,5 @@ public class Member {
 	private String m_addr2;
 	private String m_addr3;
 	private String regdate;
-	private int m_id_cnt;
+	private int code;
 }

@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gumzima.shopping.common.FileManager;
 import com.gumzima.shopping.exception.ImageDeleteException;
 import com.gumzima.shopping.exception.ImageRegistException;
 import com.gumzima.shopping.exception.ProductDeleteException;
 import com.gumzima.shopping.exception.ProductRegistException;
 import com.gumzima.shopping.exception.ProductUpdateException;
+import com.gumzima.shopping.model.common.FileManager;
 import com.gumzima.shopping.model.domain.Image;
 import com.gumzima.shopping.model.domain.Product;
 import com.gumzima.shopping.model.domain.SearchText;

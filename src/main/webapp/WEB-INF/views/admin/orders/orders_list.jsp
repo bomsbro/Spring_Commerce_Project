@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="UTF-8"%>
 <%
-List<Orders> ordersList =(List)request.getAttribute("OrdersList");
+	List<Orders> ordersList =(List)request.getAttribute("OrdersList");
 	List<OrderStatus> orderStatusList = (List)request.getAttribute("OrderStatusList");
 %>
 <!DOCTYPE html>

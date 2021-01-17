@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gumzima.shopping.common.Search;
 import com.gumzima.shopping.exception.NoticeException;
+import com.gumzima.shopping.model.common.Search;
 import com.gumzima.shopping.model.domain.Notice;
 import com.gumzima.shopping.model.notice.respository.NoticeDAO;
 

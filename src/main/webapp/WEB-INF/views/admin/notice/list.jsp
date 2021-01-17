@@ -1,7 +1,7 @@
 <%@page import="com.gumzima.shopping.model.domain.Notice"%>
-<%@page import="com.gumzima.shopping.common.Pager"%>
+<%@page import="com.gumzima.shopping.model.common.Pager"%>
 <%@page import="java.util.List"%>
-<%@ page contentType="text/html;charset=utf-8"%>
+<%@ page contentType="text/html; charset=utf-8"%>
 <%
 	List<Notice> noticeList = (List)request.getAttribute("noticeList");
 	Pager pager = new Pager();
@@ -12,6 +12,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@ include file="../inc/header.jsp" %>
 <style>
 .container {
 	padding: 20px;
@@ -63,6 +64,7 @@ $(function(){
 </script>
 </head>
 <body>
+<%@ include file="../inc/main_navi.jsp" %>
    <table>
    <h3>공지사항</h3>
    

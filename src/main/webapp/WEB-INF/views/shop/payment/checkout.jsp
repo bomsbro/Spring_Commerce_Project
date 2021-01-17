@@ -1,4 +1,4 @@
-<%@page import="com.gumzima.shopping.common.Formatter"%>
+<%@page import="com.gumzima.shopping.model.common.Formatter"%>
 <%@page import="com.gumzima.shopping.model.domain.Paymethod"%>
 <%@page import="com.gumzima.shopping.model.domain.Member"%>
 <%@page import="java.util.List"%>

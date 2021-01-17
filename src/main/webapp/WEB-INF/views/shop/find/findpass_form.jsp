@@ -54,11 +54,11 @@ $(function(){
 	<form id="member_form" class="form" >
 		<h3 class="text-center text-info">비밀번호 찾기</h3>
 		<div class="form-group">
-			<label for="username" class="text-info">Username:</label><br> <input
+			<label for="username" class="text-info">ID:</label><br> <input
 				type="text" name="m_id" id="m_id" class="form-control">
 		</div>
 		<div class="form-group">
-			<label for="username" class="text-info">nickName:</label><br> <input
+			<label for="username" class="text-info">Name:</label><br> <input
 				type="text" name="m_name" id="m_name" class="form-control">
 		</div>
 		<div class="form-group">

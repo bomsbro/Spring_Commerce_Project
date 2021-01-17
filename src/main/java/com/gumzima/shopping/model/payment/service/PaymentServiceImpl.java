@@ -107,6 +107,11 @@ public class PaymentServiceImpl implements PaymentService{
 		}
 		
 	}
+
+	@Override
+	public int selectCartItems(int member_id) {
+		return cartDAO.selectCartItems(member_id);
+	}
 	
 }
 

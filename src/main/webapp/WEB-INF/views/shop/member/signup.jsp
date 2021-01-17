@@ -9,10 +9,15 @@
     
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
   <script type="text/javascript">
-  function idCheck(){
-		 console.log($("#m_id").val());
+  var idcheck=false;
+	$(function () {
+		$("#m_phone").on("keyup", function() {
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		})	
+	})
+
+	function idCheck(){
 		 $.ajax({	
-			 
 				url:"/shop/member/Id_Check",
 				type:"get",			
 				data:{
@@ -20,10 +25,12 @@
 				},				
 				success:function(data){
 					if(data==1){						
-						alert("해당 아이디는 사용중입니다.");						
+						alert("해당 아이디는 사용중입니다.");	
+						idcheck=false;
 					}else if(data==0){
 						$("#m_id").attr("value","Y");						
 						alert("사용가능한 아이디입니다.");
+						idcheck=true;
 					}			
 				}
 		});
@@ -32,38 +39,48 @@
 	 
 	//요청이 완료되는 시점에 프로그래스바를 감춘다!!
 	function regist(){
-		//로딩바 시작
-		$("#loader").addClass("loader"); //class 동적 적용
-		
-		//form 태그의 파라미터들을 전송할수있는 상태로 둬야  data키값에 form 자체를 넣을 수 있다.
-		var formData = $("#member_form").serialize(); //전부 문자열화 시킨다!!
-		if(confirm("회원가입 하시겠습니까?")){
-			$.ajax({
-				url:"/shop/member/regist",
-				type:"post",
-				data:formData,
-				success:function(responseData){			
-					//서버로부터 완료 응답을 받으면 로딩바 효과를 중단!!
-					$("#loader").removeClass("loader"); //class 동적 제거
-					var json = JSON.parse(responseData);
-					if(json.result==1){
-						alert(json.msg);
-						location.href="/shop/member/loginForm"; // 로그인폼으로..
-					}else{
-						alert(json.msg);
-					}
+		if(idcheck==true){
+			if($("#m_id").val()==""){//id
+				alert("아이디를 입력해주세요");
+			}else if($("#m_pass").val()==""){//pass
+				alert("비밀번호를 입력해주세요");
+			}else if($("#m_name").val()==""){//name
+				alert("이름을 입력해주세요");
+			}else if($("#m_email").val()==""){//email
+				alert("이메일을 입력해주세요");
+			}else if($("#m_phone").val()==""){//phone
+				alert("연락처를 입력해주세요");
+			}else if($("#m_addr2").val()=="" || $("#m_addr3").val()==""){//addr
+				alert("주소를 입력해주세요");
+			}else{
+				var formData = $("#member_form").serialize(); //전부 문자열화 시킨다!!
+				if(confirm("회원가입 하시겠습니까?")){
+					$.ajax({
+						url:"/shop/member/regist",
+						type:"post",
+						data:formData,
+						success:function(responseData){			
+							//서버로부터 완료 응답을 받으면 로딩바 효과를 중단!!
+							$("#loader").removeClass("loader"); //class 동적 제거
+							var json = JSON.parse(responseData);
+							if(json.result==1){
+								alert(json.msg);
+								location.href="/shop/member/loginForm"; // 로그인폼으로..
+							}else{
+								alert(json.msg);
+							}
+						}
+					});
 				}
-			});
+			}
+		}else{
+			alert("아이디 중복체크를 해주세요");
 		}
 	}
     function execPostCode() {
     	daum.postcode.load(function(){
 	        new daum.Postcode({
 	            oncomplete: function(data) {
-	            	var test = data.postcode;
-	            	alert(test);
-	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-	
 	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
 	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
 	                var addr = 'data.address'; // 주소 변수	                
@@ -159,7 +176,7 @@
 		            <div class="col-md-12">
 		            	<div class="form-group">
 		            		<input type="text" id="m_addr2" name="m_addr2" class="form-control" placeholder="기본주소"><br>
-							<input type="text" id="m_addr3" class="form-control" placeholder="상세주소">	                  
+							<input type="text" id="m_addr3" name="m_addr3" class="form-control" placeholder="상세주소">	                  
 	                </div>
 		            </div>
 	            </div>

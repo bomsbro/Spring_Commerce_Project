@@ -1,6 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="javax.imageio.ImageIO"%>
-<%@page import="com.gumzima.shopping.common.FileManager"%>
+<%@page import="com.gumzima.shopping.model.common.FileManager"%>
 <%@page import="java.io.File"%>
 <%@page import="com.gumzima.shopping.model.domain.Product"%>
 <%@page import="com.gumzima.shopping.model.domain.P_topcategory"%>

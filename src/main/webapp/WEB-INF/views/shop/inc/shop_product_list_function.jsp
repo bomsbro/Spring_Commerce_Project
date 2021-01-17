@@ -91,7 +91,7 @@
 	//상품 가져오기
 	function getProductList() {
 		$.ajax({
-			url : "/admin/product/getProduct",
+			url : "/shop/product/getProduct",
 			type : "post",
 			data : {
 				subId : subId,
@@ -143,8 +143,28 @@
 		createTable(data);
 	}
 	
-	function alert(num) {
-		alert(num);
+	function addCart(product_id) {
+		<%if(session.getAttribute("member")!=null){%>
+			$.ajax({
+				url:"/shop/cart/regist",
+				type:"post",
+				data:{
+					product_id : product_id,
+					quantity : 1
+				},
+				success : function(messageData) {
+					if(messageData.resultCode==1){
+						if(confirm("상품이 장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?")){
+							location.href="/shop/cart/list";
+						}
+					}else{
+						alert(messageData.msg);
+					}
+				}
+			});
+		<%}else{%>
+			alert("로그인이 필요한 서비스입니다.")
+		<%}%>
 	}
 
 	//데이터를 기반으로 테이블 생성
@@ -188,7 +208,7 @@
 			if(product.stock==0){
 				str+="<a class='buy-now d-flex justify-content-center align-items-center mx-1'><span><i class='ion-ios-cart'></i></span></a>";
 			}else{
-				str+="<a href='#장바구니' class='buy-now d-flex justify-content-center align-items-center mx-1'><span><i class='ion-ios-cart'></i></span></a>";
+				str+="<a href='javascript:addCart("+product.product_id+")' class='buy-now d-flex justify-content-center align-items-center mx-1'><span><i class='ion-ios-cart'></i></span></a>";
 			}
 			if(product.stock==0){
 				str+="<a class='heart d-flex justify-content-center align-items-center '><span style='color:red'>"+product.stock+"</span></a></div></div></div></div></div>";

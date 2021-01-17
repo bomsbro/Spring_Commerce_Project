@@ -1,5 +1,5 @@
 <%@page import="com.gumzima.shopping.model.domain.Member"%>
-<%@page import="com.gumzima.shopping.common.Pager"%>
+<%@page import="com.gumzima.shopping.model.common.Pager"%>
 <%@page import="java.util.List"%>
 
 <%@ page contentType="text/html; charset=utf-8"%>

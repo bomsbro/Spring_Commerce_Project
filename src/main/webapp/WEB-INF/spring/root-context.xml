@@ -4,37 +4,97 @@
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<jee:jndi-lookup
-	id="dataSource"
-	jndi-name="jdbc/oracle"
-	resource-ref="true"/>
-
-	<bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-	p:dataSource-ref="dataSource"/>
+	
+	<!-- JNDI 등록 : Mybatis 가 아닌, 스프링이 접속객체를 주도한다. 왜? 스프링이 트랜잭션을 관리하므로..-->
+	<jee:jndi-lookup 
+		id="dataSource" 
+		jndi-name="jdbc/oracle"
+		resource-ref="true"/>
+		
+	<!-- 각 기술에 맞는 트랜잭션 객체를 등록한다. 
+		ex) Hibernate 사용시 :  HibernateTransactionManager 
+		ex) jdbc 사용시 : DataSourceTransactionManager 
+		ex) Mybatis 사용시 : DataSourceTransactionManager
+	 -->	
+	<bean id="dataSourceTransactionManager" 
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource"/>
 	
 	<!-- Spring JDBC 사용시 -->
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
-	p:dataSource-ref="dataSource"/>
-	
-	<!-- Mybatis Spring -->
-	<bean id="sqlSessionFactoryBean"
+	<bean id="jdbcTemplate" 
+		class="org.springframework.jdbc.core.JdbcTemplate"
+		p:dataSource-ref="dataSource"/>							
+		
+	<!-- Mybatis Spring  -->	
+	<bean id="sqlSessionFactoryBean" 
 		class="org.mybatis.spring.SqlSessionFactoryBean"
 		p:dataSource-ref="dataSource"
 		p:configLocation="classpath:com/gumzima/shopping/mybatis/config/config.xml"/>
-	
+		
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactoryBean"/>
-	</bean>	
+	</bean>			
+	<!-- 모델 영역은 모든 서블릿에서 공용으로 사용할 예정이므로, ServletContext 수준에서 
+		어플리케이션이 가동될때 부터 등록되어 있어야 한다.. -->
+	<context:component-scan base-package="com.gumzima.shopping.model"/>
 	
-	<!-- 모델 영역은 모든 서블릿에서 공용으로 사용할 예정이므로, ServletContext 수준에서
-		어플리케이션이 가동될 때부터 등록되어야 한다. -->
+	<!-- DI와 같이 객체를 인터페이스로 보유하는 방식이 아니라, 공통코드를 외부로 완전히 분리시킨 후
+	원하는 시점에, 공통코드를 동작시키는 관점지향 프로그래밍을 가리켜 AOP라 부른다!	
+	  -->
+	<!-- 공통코드는 이미 어노테이션으로 등록되어 잇다..Bell -->
 	
-	<!-- <context:component-scan base-package="com.gumzima.shopping">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-	</context:component-scan> -->
+	<!-- 어느시점에, 어떤 메서드 호출시 공통코드를 동작시킬지를 xml로 서술해보자 -->
+<!-- 	
+	<aop:config>
+		<aop:aspect id="bellAspect" ref="bell">
+			어떤 메서드 실행시 관여할지 서술
+			<aop:pointcut expression="execution(public * com.koreait.fashionshop.model.bank.repository..*(**))" id="bellPointcut"/>
+			<aop:after method="sound" pointcut-ref="bellPointcut"/>
+		</aop:aspect>			
+	</aop:config>		
+ -->	
+		
+	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- 업로드를 위한 설정 : 주의- id가 정해져있다 개발자가 맘대로 바꾸면 안됨 -->
+	<bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+					
+	
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources location="/resources/**" mapping="/resources/"/>
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list value-type="java.util.ArrayList">
+				 <ref bean="mappingJackson2HttpMessageConverter"/>
+			</list>
+		</property>				
+	</bean>
+	
+	<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=utf-8</value>
+			</list>
+		</property>	
+	</bean>
+	
+		
 </beans>

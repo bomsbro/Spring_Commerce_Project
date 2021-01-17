@@ -20,6 +20,7 @@
 		<typeAlias type="com.gumzima.shopping.model.domain.OrderStatus" alias="OrderStatus"/>
 		<typeAlias type="com.gumzima.shopping.model.domain.Paymethod" alias="Paymethod"/>
 		<typeAlias type="com.gumzima.shopping.model.domain.Cart" alias="Cart"/>
+		<typeAlias type="com.gumzima.shopping.model.domain.Customer" alias="Customer"/>
 	</typeAliases>
   <mappers>
   	<mapper resource="com/gumzima/shopping/mybatis/mapper/P_topcategoryMapper.xml"/>
@@ -37,5 +38,6 @@
    	<mapper resource="com/gumzima/shopping/mybatis/mapper/OrderStatusMapper.xml"/>
  	<mapper resource="com/gumzima/shopping/mybatis/mapper/PaymethodMapper.xml"/>
    	<mapper resource="com/gumzima/shopping/mybatis/mapper/CartMapper.xml"/>
+   	<mapper resource="com/gumzima/shopping/mybatis/mapper/CustomerMapper.xml"/>
   </mappers>
 </configuration>

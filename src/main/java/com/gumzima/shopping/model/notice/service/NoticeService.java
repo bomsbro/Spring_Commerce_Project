@@ -2,8 +2,8 @@ package com.gumzima.shopping.model.notice.service;
 
 import java.util.List;
 
-import com.gumzima.shopping.common.Pager;
-import com.gumzima.shopping.common.Search;
+import com.gumzima.shopping.model.common.Pager;
+import com.gumzima.shopping.model.common.Search;
 import com.gumzima.shopping.model.domain.Notice;
 
 

@@ -1,5 +1,5 @@
 
-<%@page import="com.gumzima.shopping.common.Formatter"%>
+<%@page import="com.gumzima.shopping.model.common.Formatter"%>
 <%@page import="com.gumzima.shopping.model.domain.OrderStatus"%>
 <%@page import="com.gumzima.shopping.model.domain.OrderDetail"%>
 <%@page import="java.util.List"%>

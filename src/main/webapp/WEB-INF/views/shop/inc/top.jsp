@@ -1,3 +1,4 @@
+<%@page import="com.gumzima.shopping.model.domain.Member"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <div class="py-1 bg-primary">
        <div class="container">
@@ -22,21 +23,23 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
        <div class="container">
-         <a class="navbar-brand" href="/shop">Gumzima</a>
+         <a class="navbar-brand" href="/">Gumzima</a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
            <span class="oi oi-menu"></span> Menu
          </button>
 
          <div class="collapse navbar-collapse" id="ftco-nav">
            <ul class="navbar-nav ml-auto">
-             <li class="nav-item active"><a href="/shop" class="nav-link">Home</a></li>
+             <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
              <li class="nav-item active"><a href="/shop/product/list" class="nav-link">Products</a></li>
              <li class="nav-item active"><a href="/shop/recipe/list" class="nav-link">Recipes</a></li>
-             <li class="nav-item active"><a href="/admin/notice/list" class="nav-link">Notice</a></li>
-             <li class="nav-item active"><a href="/admin/customer/list" class="nav-link">1:1문의</a></li>
+             <li class="nav-item active"><a href="/shop/notice/list" class="nav-link">Notice</a></li>
+             <li class="nav-item active"><a href="/shop/customer/list" class="nav-link">1:1문의</a></li>
+             <%Member mainMember=null; %>
              <%if(session.getAttribute("member")==null){ %>
              <li class="nav-item active"><a href="/shop/member/loginForm" class="nav-link">Sign In</a></li>
              <%}else{ %>
+             	<%mainMember=(Member)session.getAttribute("member"); %>
              <li class="nav-item active"><a href="/shop/member/logout" class="nav-link">Sign Out</a></li>
              <%} %>
              <li class="nav-item dropdown">
@@ -44,10 +47,17 @@
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <a class="dropdown-item" href="/shop/mypage/orderhistory">주문내역</a>
                 <a class="dropdown-item" href="/shop/member/mypagehome">회원정보수정</a>
-                <a class="dropdown-item" href="/shop/member/signup">회원가입</a>
               </div>
               </li>
-             <li class="nav-item cta cta-colored"><a href="/shop/cart/list" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+              <%if(mainMember==null || mainMember.getCode()!=1){ %>
+             	<%if(session.getAttribute("cartItems")==null){ %>
+	             	<li class="nav-item cta cta-colored"><a href="/shop/cart/list" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+             	<%}else{ %>
+	             	<li class="nav-item cta cta-colored"><a href="/shop/cart/list" class="nav-link"><span class="icon-shopping_cart"></span>[<%=session.getAttribute("cartItems") %>]</a></li>
+             	<%} %>
+              <%}else{ %>
+             	<li class="nav-item active"><a href="/admin" class="nav-link">관리자 페이지</a></li>
+              <%} %>
            </ul>
          </div>
        </div>

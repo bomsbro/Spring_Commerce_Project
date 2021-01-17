@@ -2,7 +2,7 @@ package com.gumzima.shopping.model.product.service;
 
 import java.util.List;
 
-import com.gumzima.shopping.common.FileManager;
+import com.gumzima.shopping.model.common.FileManager;
 import com.gumzima.shopping.model.domain.Product;
 import com.gumzima.shopping.model.domain.SearchText;
 

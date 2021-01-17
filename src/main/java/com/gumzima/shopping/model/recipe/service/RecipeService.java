@@ -2,7 +2,7 @@ package com.gumzima.shopping.model.recipe.service;
 
 import java.util.List;
 
-import com.gumzima.shopping.common.FileManager;
+import com.gumzima.shopping.model.common.FileManager;
 import com.gumzima.shopping.model.domain.Recipe;
 import com.gumzima.shopping.model.domain.RecipeSearch;
 

@@ -1,4 +1,4 @@
-<%@page import="com.gumzima.shopping.common.Formatter"%>
+<%@page import="com.gumzima.shopping.model.common.Formatter"%>
 <%@page import="java.util.List"%>
 
 <%@page import="com.gumzima.shopping.model.domain.Cart"%>
@@ -152,7 +152,7 @@ int delivery = 3000;
     					<hr>
     					<p class="d-flex total-price">
     						<span>Total</span>
-    						<span><%=Formatter.getCurrency(sum) %></span>
+    						<span><%=Formatter.getCurrency(sum+delivery-discount) %></span>
     					</p>
     				</div>
     				<p><a href="javascript:checkoutForm()" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>

@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gumzima.shopping.common.MessageData;
 import com.gumzima.shopping.exception.CartException;
 import com.gumzima.shopping.exception.LoginRequiredException;
+import com.gumzima.shopping.model.common.MessageData;
 import com.gumzima.shopping.model.domain.Cart;
 import com.gumzima.shopping.model.domain.Member;
 import com.gumzima.shopping.model.domain.Orders;
@@ -56,16 +56,14 @@ public class PaymentController {
 		//장바구니에 상품 담기 요청 
 		@RequestMapping(value="/shop/cart/regist", method=RequestMethod.POST)
 		@ResponseBody
-		public MessageData registCart(Cart cart, HttpSession session) {
-			if(session.getAttribute("member")==null) {
-				throw new LoginRequiredException("로그인이 필요한 서비스입니다.");
-			}
-			
+		public MessageData registCart(Cart cart, HttpServletRequest request) {
+			HttpSession session=request.getSession();
 			Member member = (Member)session.getAttribute("member");
 			
 			cart.setMember_id(member.getMember_id());
 			paymentService.insert(cart);
-			
+			int cartItems=paymentService.selectCartItems(member.getMember_id());
+			session.setAttribute("cartItems", cartItems);
 			//MessageConverter 에 의해 VO는 JSON형태로 응답되어질 수 있다!!
 			MessageData messageData = new MessageData();
 			messageData.setResultCode(1);
@@ -78,13 +76,10 @@ public class PaymentController {
 		//장바구니 비우기 
 		@RequestMapping(value="/shop/cart/del", method=RequestMethod.GET)
 		@ResponseBody
-		public MessageData delCart(HttpSession session){
+		public MessageData delCart(HttpServletRequest requset){
 			//장바구니를 삭제하기 위해서는, 로그인한 회원만 가능..
-			if(session.getAttribute("member")==null) {
-				throw new LoginRequiredException("로그인이 필요한 서비스입니다");
-			}
-		
-			Member member = new Member();
+			HttpSession session=requset.getSession();
+			Member member = (Member)session.getAttribute("member");
 			
 			paymentService.delete(member);
 			
@@ -98,10 +93,10 @@ public class PaymentController {
 		}
 		
 		@RequestMapping(value="/shop/cart/edit", method=RequestMethod.POST)
-		public ModelAndView editCart(HttpSession session,@RequestParam("cart_id") int[] cartArray, @RequestParam("quantity") int[] qArray) {
+		public ModelAndView editCart(HttpServletRequest requset,@RequestParam("cart_id") int[] cartArray, @RequestParam("quantity") int[] qArray) {
 			//넘겨받은 파라미터 출력하기!!  cart_id,  quantity 
-			logger.debug("cartArray length "+cartArray.length);
-			Member member = (Member) session.getAttribute("member");
+			HttpSession session=requset.getSession();
+			Member member = (Member)session.getAttribute("member");
 			int member_id = member.getMember_id();
 			List cartList = new ArrayList();
 			for(int i=0;i<cartArray.length;i++) {
@@ -127,10 +122,8 @@ public class PaymentController {
 		
 		//체크아웃 페이지 요청 
 		@GetMapping("/shop/payment/form")
-		public String payForm(Model model, HttpSession session) {
-			if(session.getAttribute("member")==null) {
-				throw new LoginRequiredException("로그인이 필요한 서비스입니다");
-			}
+		public String payForm(HttpServletRequest requset, Model model) {
+			HttpSession session=requset.getSession();
 			Member member = (Member)session.getAttribute("member");
 			
 			//결제수단 가져오기 
@@ -146,7 +139,8 @@ public class PaymentController {
 	
 		//결제요청 처리
 		@PostMapping("/shop/payment/regist")
-		public String pay(HttpSession session, Orders orders) {
+		public String pay(HttpServletRequest requset, Orders orders) {
+			HttpSession session=requset.getSession();
 			Member member = (Member)session.getAttribute("member");
 		
 			orders.setMember_id(member.getMember_id()); //나중에 수정해야함***
@@ -154,14 +148,14 @@ public class PaymentController {
 			paymentService.registOrder(orders);
 			
 			paymentService.delete(member);
-			return "redirect:/shop/";
+			return "redirect:/";
 		}
 		
 		@ExceptionHandler(CartException.class)
 		@ResponseBody
 		public MessageData handleException(CartException e) {
 			MessageData messageData= new MessageData();
-			messageData.setResultCode(1);
+			messageData.setResultCode(0);
 			messageData.setMsg(e.getMessage()); 
 			messageData.setUrl("/shop/cart/list");
 			return messageData;

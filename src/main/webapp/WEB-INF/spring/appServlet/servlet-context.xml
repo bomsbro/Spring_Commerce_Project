@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-	xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing 
-		infrastructure -->
-
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+	
 	<!-- json 컨버터 등록 !! -->
-	<beans:bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<beans:property name="messageConverters">
 			<beans:list value-type="java.util.ArrayList">
-				<beans:ref bean="mappingJackson2HttpMessageConverter" />
+				<beans:ref bean="mappingJackson2HttpMessageConverter"/>
 			</beans:list>
-		</beans:property>
+		</beans:property>				
 	</beans:bean>
-
+	
 	<beans:bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<beans:property name="supportedMediaTypes">
 			<!-- 개발자가 원하는 각종 타입들을 여러개 명시할 수 있다 -->
@@ -32,23 +31,41 @@
 			</beans:list>
 		</beans:property>	
 	</beans:bean>
-
+	
 	<!-- 업로드를 위한 설정 : 주의- id가 정해져있다 개발자가 맘대로 바꾸면 안됨 -->
-	<beans:bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-		up static resources in the ${webappRoot}/resources directory -->
+	<beans:bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+					
+	
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
-		in the /WEB-INF/views directory -->
-	<beans:bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-
-	<context:component-scan	base-package="com.gumzima.shopping"/>
-
+	
+	<context:component-scan base-package="com.gumzima.shopping.controller"/>
+		
+	<!-- 설정파일을 열어서, 메인 호출시 벨을 울리는 AOP설정 -->
+	<beans:bean id="memberSessionCheckAspect" class="com.gumzima.shopping.aop.MemberSessionCheckAspect"/>
+	
+	<aop:config>
+		<aop:aspect id="sessionCheckAspect" ref="memberSessionCheckAspect">
+			<!-- 어떤 메서드 실행시 관여할지 서술 -->
+			<aop:pointcut expression="execution(public * com.gumzima.shopping.controller.payment..*(..))
+			||execution(public * com.gumzima.shopping.controller.member..*(..))
+			||execution(public * com.gumzima.shopping.controller.mypage..*(..))
+			||execution(public * com.gumzima.shopping.controller.orders..*(..))" id="sessionPointCut"/>
+			<aop:around method="sessionCheck" pointcut-ref="sessionPointCut"/>
+		</aop:aspect>
+		<aop:aspect id="sessionCheckAspect" ref="memberSessionCheckAspect">
+			<!-- 어떤 메서드 실행시 관여할지 서술 -->
+			<aop:pointcut expression="execution(public * com.gumzima.shopping.controller.admin..*(..))" id="adminPointCut"/>
+			<aop:around method="adminCheck" pointcut-ref="adminPointCut"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<beans:bean id="globalExceptionHandler" class="com.gumzima.shopping.aop.GlobalExceptionHandler"/>
 </beans:beans>

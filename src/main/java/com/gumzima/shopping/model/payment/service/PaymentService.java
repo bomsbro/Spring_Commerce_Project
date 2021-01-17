@@ -15,6 +15,7 @@ public interface PaymentService {
 	public void update(List<Cart> cartList); //일괄 수정
 	public void delete(Cart cart); //pk에 속한 데이터 삭제할예정
 	public void delete(Member member); //회원에 속한 데이터 삭제할예정
+	public int selectCartItems(int member_id);
 	
 	//결제 업무
 	public List selectPaymethodList();

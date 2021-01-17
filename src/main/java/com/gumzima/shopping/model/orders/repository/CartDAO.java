@@ -14,4 +14,5 @@ public interface CartDAO {
 	public void update(Cart cart);
 	public void delete(Cart cart); //pk를 이용한 삭제
 	public void delete(Member member); //회원에 속한 데이터 삭제할예정
+	public int selectCartItems(int member_id);
 }

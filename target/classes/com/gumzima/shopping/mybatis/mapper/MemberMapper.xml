@@ -3,8 +3,8 @@
 <mapper namespace="Member">
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="Member">
-		insert into member(member_id,m_id,m_pass,m_name,m_phone,m_email,m_email_server,m_addr1,m_addr2) 
-		values(seq_member.nextval,#{m_id},#{m_pass},#{m_name},#{m_phone},#{m_email},#{m_email_server},#{m_addr1},#{m_addr2})		
+		insert into member(member_id,m_id,m_pass,m_name,m_phone,m_email,m_email_server,m_addr1,m_addr2, m_addr3) 
+		values(seq_member.nextval,#{m_id},#{m_pass},#{m_name},#{m_phone},#{m_email},#{m_email_server},#{m_addr1},#{m_addr2}, #{m_addr3})	
 	</insert>	
 	<!-- 전체회원목록 -->
 	<select id="selectAll" resultType="Member">

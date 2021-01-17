@@ -11,13 +11,13 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gumzima.shopping.common.MailSender;
-import com.gumzima.shopping.common.SecureManager;
 import com.gumzima.shopping.exception.MailSendException;
 import com.gumzima.shopping.exception.MemberNotFoundException;
 import com.gumzima.shopping.exception.MemberRegistException;
 import com.gumzima.shopping.exception.NoticeException;
 import com.gumzima.shopping.exception.parseException;
+import com.gumzima.shopping.model.common.MailSender;
+import com.gumzima.shopping.model.common.SecureManager;
 import com.gumzima.shopping.model.domain.Member;
 import com.gumzima.shopping.model.domain.Notice;
 import com.gumzima.shopping.model.member.repository.MemberDAO;
@@ -43,7 +43,6 @@ public class MemberServiceImpl implements MemberService{
 	
 	// 1명의 회원정도 가져요기
 	public Member selectId(int member_id) {
-		System.out.println("service : "+member_id);	// null
 		Member member = null;
 		member = memberDAO.selectId(member_id);
 		return member;
@@ -106,7 +105,7 @@ public class MemberServiceImpl implements MemberService{
 	public int find_pass(Member member) {	
 		int result = 0;
 		if(memberDAO.Id_Check(member.getM_id())==0) {
-			JOptionPane.showMessageDialog(null, "존재하지 않는 아이디 입니다.");
+			result=0;
 		}else {
 			if(memberDAO.find_equ(member)!=null) {// 이름, 이메일..
 				//성공 -> 임시비밀번호 발송

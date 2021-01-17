@@ -1,5 +1,5 @@
 <%@page import="com.gumzima.shopping.model.domain.Recipe"%>
-<%@page import="com.gumzima.shopping.common.Formatter"%>
+<%@page import="com.gumzima.shopping.model.common.Formatter"%>
 <%@page import="com.gumzima.shopping.model.domain.Image"%>
 <%@page import="java.util.List"%>
 <%@page import="com.gumzima.shopping.model.domain.Product"%>

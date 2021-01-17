@@ -1,6 +1,6 @@
-<%@page import="com.gumzima.shopping.common.Pager"%>
+<%@page import="com.gumzima.shopping.model.common.Pager"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.gumzima.shopping.common.Formatter"%>
+<%@page import="com.gumzima.shopping.model.common.Formatter"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@page import="com.gumzima.shopping.model.domain.Product"%>
 <%@page import="com.gumzima.shopping.model.domain.P_topcategory"%>

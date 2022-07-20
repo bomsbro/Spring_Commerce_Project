@@ -1,1 +1,1 @@
-# GumzimaShopping_Project
+# Gumzima_Shopping_Mall_Project
